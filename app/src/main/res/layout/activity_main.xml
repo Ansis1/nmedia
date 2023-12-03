@@ -16,7 +16,7 @@
         android:src="@drawable/netology"
         app:layout_constraintBottom_toTopOf="@+id/barrier_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_titlepost"
@@ -141,5 +141,5 @@
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/ib_liked"
         app:layout_constraintStart_toEndOf="@+id/ib_liked"
-        app:layout_constraintTop_toTopOf="@+id/ib_liked"/>
+        app:layout_constraintTop_toTopOf="@+id/ib_liked" />
 </androidx.constraintlayout.widget.ConstraintLayout>
