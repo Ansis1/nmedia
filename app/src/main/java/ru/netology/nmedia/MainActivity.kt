@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.netology.nmedia.databinding.ActivityMainBinding
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,12 +59,27 @@ class PostRepositoryImpl : PostRepository {
         1234,
         "Ansis",
         "This is content of Post.",
-        System.currentTimeMillis(),
+        getHumanDate(System.currentTimeMillis()),
         false,
         mutableMapOf(Pair("1", 0L)),
         mutableMapOf(Pair("looked", "1K")),
         "Test title"
     )
+
+    private fun getHumanDate(timeInMs: Long): String { // перевод даты в ЧПУ-вид
+        val pattern = "dd MMM HH:mm"
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val formatter = DateTimeFormatter.ofPattern(pattern);
+            formatter.format(
+                LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(timeInMs),
+                    ZoneId.systemDefault()
+                )
+            )
+        } else {
+                SimpleDateFormat(pattern).format(timeInMs).toString()
+        }
+    }
 
     private val data = MutableLiveData(nPost)
     override fun get(): LiveData<Post> = data
@@ -128,7 +151,7 @@ data class Post(
     val id: Long,
     val author: String,
     val content: String,
-    val published: Long,
+    val published: String,
     val likedByMe: Boolean,
     val counterMap: MutableMap<String, Long>,
     val counterStringsMap: MutableMap<String, String>,
