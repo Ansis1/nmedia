@@ -5,53 +5,52 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import ru.netology.nmedia.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     val counterMap = mutableMapOf<String, Long>()
     val counterStringsMap = mutableMapOf(Pair("looked", "1K"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val tvTitlePost: TextView = findViewById(R.id.tv_titlepost)
-        val tvDatePost: TextView = findViewById(R.id.tv_datepost)
-        val tvTextPost: TextView = findViewById(R.id.tv_textpost)
-        val tvLikesCnt: TextView = findViewById(R.id.tv_likes_cnt)
-        val tvLookCnt: TextView = findViewById(R.id.tv_look_cnt)
-        val tvShareCnt: TextView = findViewById(R.id.tv_share_cnt)
-        val lkeIb: ImageButton = findViewById(R.id.ib_liked)
-        val shareIb: ImageButton = findViewById(R.id.ib_shared)
+        with(binding) {
         tvLikesCnt.setText(counterStringsMap.get("liked") ?: "0")
         tvShareCnt.setText(counterStringsMap.get("shared") ?: "0")
         tvLookCnt.setText(counterStringsMap.get("looked") ?: "0")
+    }
+        binding.ibShared.setOnClickListener {
 
-        shareIb.setOnClickListener {
-
-            reloadCntCounters("shared", 10, tvShareCnt);
+            reloadCntCounters("shared", 10,binding.tvShareCnt);
         }
 
         var isLiked = false
+        val lkeIb =  binding.ibLiked
         lkeIb.setOnClickListener {
 
             if (!isLiked) {
                 isLiked = true
                 lkeIb.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.liked))
-                reloadCntCounters("liked", tvForChange = tvLikesCnt);
+                reloadCntCounters("liked", tvForChange = binding.tvLikesCnt);
             } else {
                 if ((counterMap.get("liked") ?: 0) > 0) {
-                    reloadCntCounters("liked", -1, tvLikesCnt);
+                    reloadCntCounters("liked", -1, binding.tvLikesCnt);
                 }
                 lkeIb.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.like))
                 isLiked = false
             }
 
         }
-        tvTitlePost.setText(getString(R.string.post_title))
-        tvDatePost.setText(getString(R.string.post_date))
-        tvTextPost.setText(getString(R.string.post_txt))
 
+        with(binding) {
+            tvTitlepost.setText(getString(R.string.post_title))
+            tvDatepost.setText(getString(R.string.post_date))
+            tvTextpost.setText(getString(R.string.post_txt))
+        }
     }
 
     private fun reloadCntCounters(type: String, summ: Long = 1, tvForChange: TextView) {
