@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         when {
 
-            currCnt > 999_000 -> {
+            currCnt > 9_99_999 -> {
 
                 val finishString = "${stringNumb[0]}${
                     if (stringNumb[1] != '0') {
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             currCnt > 9_999 -> {
-                val finishString = "${stringNumb[0]}${stringNumb[1]}K"
+                val finishString = "${stringNumb[0]}${stringNumb[1]}${stringNumb[2]}K"
                 counterStringsMap.put(type, finishString)
                 tvForChange.text = finishString
 
