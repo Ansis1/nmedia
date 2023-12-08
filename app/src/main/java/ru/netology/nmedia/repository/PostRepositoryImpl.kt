@@ -2,9 +2,8 @@ package ru.netology.nmedia.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.netology.nmedia.ui.Post
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.getHumanDate
-import ru.netology.nmedia.utils.reloadCntCounters
 
 class PostRepositoryImpl : PostRepository {
 
@@ -33,7 +32,7 @@ class PostRepositoryImpl : PostRepository {
         changeCounters("shared", 10)
     }
 
-    fun changeCounters(type: String, summ: Long) {
+    private fun changeCounters(type: String, summ: Long) {
         val prevCnt = nPost.counterMap.get(type) ?: 0
         val currCnt = prevCnt + (if (summ == 0L) 1 else summ)
         val nwPost = nPost.copy()
