@@ -1,0 +1,10 @@
+package ru.netology.nmedia.repository
+
+import androidx.lifecycle.LiveData
+import ru.netology.nmedia.ui.Post
+
+interface PostRepository {
+    fun get(): LiveData<Post> // получить объект Post
+    fun like() //нажать понравилось
+    fun share() //поделиться
+}
