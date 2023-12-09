@@ -1,7 +1,4 @@
 <resources>
     <string name="app_name">nmedia</string>
     <string name="nmedia">Nmedia!</string>
-    <string name="post_txt" translatable="false">AndroidX libraries are moving to a default minimum supported Android API level 19 (previously 14) starting with releases in October, 2023. According to Play Store check-in data, nearly all Android users have devices on API 19 or newer, so it’s no longer necessary to support legacy versions. This change will help AndroidX libraries maximize the potential number of users for app developers and aligns with Google Play Services and Android NDK.</string>
-    <string name="post_date" translatable="false">01 мая в 18:00</string>
-    <string name="post_title" translatable="false">Очень длинный заголовок, много - много слов и букв. Совсем.</string>
 </resources>
