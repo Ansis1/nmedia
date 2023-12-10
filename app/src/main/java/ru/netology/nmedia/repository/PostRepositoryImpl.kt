@@ -98,7 +98,7 @@ class PostRepositoryImpl : PostRepository {
         val currCnt = prevCnt + (if (summ == 0L) 1 else summ)
         currPost.counterMap.put(type, currCnt)
         posts = posts.map {
-            if (it.id != id) it else currPost.copy()
+            if (it.id != id) it else currPost
         }
         data.value = posts
     }
