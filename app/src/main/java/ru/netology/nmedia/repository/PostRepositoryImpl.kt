@@ -17,27 +17,53 @@ class PostRepositoryImpl : PostRepository {
         "Test title"
     )
 
-    private val data = MutableLiveData(nPost)
-    override fun get(): LiveData<Post> = data
-    override fun like() {
-        nPost = nPost.copy(likedByMe = !nPost.likedByMe) //Меняем зн. для смены иконки
-        val cnt = if (nPost.likedByMe) 1L else {
-            if ((nPost.counterMap.get("liked") ?: 0) > 0) -1L else 0
+    var posts = listOf(
+        Post(
+            1234,
+            "Ansis",
+            "This is content of Post1.",
+            getHumanDate(System.currentTimeMillis()),
+            false,
+            mutableMapOf(Pair("looked", 12_300)),
+            "Test title"
+        ),
+        Post(
+            2234,
+            "Ansis",
+            "This is content of Post2.",
+            getHumanDate(System.currentTimeMillis()),
+            true,
+            mutableMapOf(Pair("looked", 200_000)),
+            "Test title2"
+        ),
+
+        )
+
+    private val data = MutableLiveData(posts)
+    override fun getAll(): LiveData<List<Post>> = data
+    override fun likeById(id: Long) {
+        var currPost = posts.last { it.id == id }
+        currPost = currPost.copy(likedByMe = !currPost.likedByMe)
+        val cnt = if (currPost.likedByMe) 1L else {
+            if ((currPost.counterMap.get("liked") ?: 0) > 0) -1L else 0
         }
-        changeCounters("liked", cnt)
-
+        changeCounters(id, "liked", cnt)
     }
 
-    override fun share() {
-        changeCounters("shared", 10)
+    override fun shareById(id: Long) {
+
+        changeCounters(id, "shared", 10)
     }
 
-    private fun changeCounters(type: String, summ: Long) {
-        val prevCnt = nPost.counterMap.get(type) ?: 0
+    private fun changeCounters(id: Long, type: String, summ: Long) {
+        val currPost = posts.last { it.id == id }.copy()
+        val prevCnt = currPost.counterMap.get(type) ?: 0
         val currCnt = prevCnt + (if (summ == 0L) 1 else summ)
-        val nwPost = nPost.copy()
-        nwPost.counterMap.put(type, currCnt)
-        data.value = nwPost
+        currPost.counterMap.put(type, currCnt)
+        posts = posts.map {
+            if (it.id != id) it else currPost
+        }
+        data.value = posts
     }
 
 

@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityMainBinding
+import ru.netology.nmedia.databinding.PostCardBinding
 import ru.netology.nmedia.utils.reloadCntCounters
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -16,29 +17,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: PostViewModel by viewModels()
-        viewModel.data.observe(this) { post ->
-            with(binding) {
-                tvTextpost.setText(post.content)
-                tvTitlepost.setText(post.title)
-                tvDatepost.setText(post.published)
-                tvLikesCnt.setText(reloadCntCounters(post.counterMap.get("liked") ?: 0))
-                tvLookCnt.setText(reloadCntCounters(post.counterMap.get("looked") ?: 0))
-                tvShareCnt.setText(reloadCntCounters(post.counterMap.get("shared") ?: 0))
-                ibLiked.setImageResource(if (post.likedByMe) R.drawable.liked else R.drawable.like)
+        viewModel.data.observe(this) { posts ->
+
+            posts.map { post ->
+                PostCardBinding.inflate(layoutInflater, binding.root, true).apply {
+
+                    tvTextpost.text = post.content
+                    tvTitlepost.text = post.title
+                    tvDatepost.text = post.published
+                    tvLikesCnt.text = reloadCntCounters(post.counterMap.get("liked") ?: 0)
+                    tvLookCnt.text = reloadCntCounters(post.counterMap.get("looked") ?: 0)
+                    tvShareCnt.text = reloadCntCounters(post.counterMap.get("shared") ?: 0)
+                    ibLiked.setImageResource(if (post.likedByMe) R.drawable.liked else R.drawable.like)
+                    ibShared.setOnClickListener {
+
+                        viewModel.shareById(post.id)
+                    }
+
+                    ibLiked.setOnClickListener {
+
+                        viewModel.likeById(post.id)
+
+                    }
+                }.root
             }
 
         }
 
-        binding.ibShared.setOnClickListener {
-
-            viewModel.share()
-        }
-
-        binding.ibLiked.setOnClickListener {
-
-            viewModel.like()
-
-        }
 
     }
 
