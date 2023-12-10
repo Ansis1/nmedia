@@ -15,8 +15,13 @@ fun reloadCntCounters(count: Long): String {
             }M"
         }
 
-        count > 9_999 -> {
+        count > 99_999 -> {
             "${stringNumb[0]}${stringNumb[1]}${stringNumb[2]}K"
+
+        }
+
+        count > 9_999 -> {
+            "${stringNumb[0]}${stringNumb[1]}K"
 
         }
 

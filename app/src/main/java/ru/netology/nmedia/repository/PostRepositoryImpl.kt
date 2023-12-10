@@ -24,7 +24,7 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post1.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 12_300)),
+            mutableMapOf(Pair("looked", 120_300)),
             "Test title"
         ),
         Post(
@@ -32,7 +32,7 @@ class PostRepositoryImpl : PostRepository {
             "Ansis",
             "This is content of Post2.",
             getHumanDate(System.currentTimeMillis()),
-            true,
+            false,
             mutableMapOf(Pair("looked", 200_000)),
             "Test title2"
         ),
@@ -47,21 +47,22 @@ class PostRepositoryImpl : PostRepository {
         val cnt = if (currPost.likedByMe) 1L else {
             if ((currPost.counterMap.get("liked") ?: 0) > 0) -1L else 0
         }
-        changeCounters(id, "liked", cnt)
+        changeCounters(id, "liked", cnt, currPost)
+
     }
 
     override fun shareById(id: Long) {
 
-        changeCounters(id, "shared", 10)
+        changeCounters(id, "shared", 10, null)
     }
 
-    private fun changeCounters(id: Long, type: String, summ: Long) {
-        val currPost = posts.last { it.id == id }.copy()
+    private fun changeCounters(id: Long, type: String, summ: Long, thisPost: Post?) {
+        val currPost = thisPost ?: posts.last { it.id == id }.copy()
         val prevCnt = currPost.counterMap.get(type) ?: 0
         val currCnt = prevCnt + (if (summ == 0L) 1 else summ)
         currPost.counterMap.put(type, currCnt)
         posts = posts.map {
-            if (it.id != id) it else currPost
+            if (it.id != id) it else currPost.copy()
         }
         data.value = posts
     }

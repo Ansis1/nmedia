@@ -18,26 +18,25 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel: PostViewModel by viewModels()
         viewModel.data.observe(this) { posts ->
-
+            binding.container.removeAllViews()
             posts.map { post ->
-                PostCardBinding.inflate(layoutInflater, binding.root, true).apply {
+                PostCardBinding.inflate(layoutInflater, binding.container, true).apply {
 
-                    tvTextpost.text = post.content
                     tvTitlepost.text = post.title
                     tvDatepost.text = post.published
+                    tvTextpost.text = post.content
+
                     tvLikesCnt.text = reloadCntCounters(post.counterMap.get("liked") ?: 0)
                     tvLookCnt.text = reloadCntCounters(post.counterMap.get("looked") ?: 0)
                     tvShareCnt.text = reloadCntCounters(post.counterMap.get("shared") ?: 0)
-                    ibLiked.setImageResource(if (post.likedByMe) R.drawable.liked else R.drawable.like)
-                    ibShared.setOnClickListener {
 
+                    ibLiked.setImageResource(if (post.likedByMe) R.drawable.liked else R.drawable.like)
+
+                    ibShared.setOnClickListener {
                         viewModel.shareById(post.id)
                     }
-
                     ibLiked.setOnClickListener {
-
                         viewModel.likeById(post.id)
-
                     }
                 }.root
             }
