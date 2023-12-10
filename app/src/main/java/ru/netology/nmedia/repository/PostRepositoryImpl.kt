@@ -7,15 +7,6 @@ import ru.netology.nmedia.utils.getHumanDate
 
 class PostRepositoryImpl : PostRepository {
 
-    var nPost = Post(
-        1234,
-        "Ansis",
-        "This is content of Post.",
-        getHumanDate(System.currentTimeMillis()),
-        false,
-        mutableMapOf(Pair("looked", 1_000)),
-        "Test title"
-    )
 
     var posts = listOf(
         Post(
@@ -24,7 +15,7 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post1.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 120_300)),
+            mutableMapOf(Pair("looked", 90)),
             "Test title"
         ),
         Post(
@@ -33,8 +24,53 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post2.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 200_000)),
+            mutableMapOf(Pair("looked", 120)),
             "Test title2"
+        ),
+        Post(
+            22341,
+            "Ansis",
+            "This is content of Post3.",
+            getHumanDate(System.currentTimeMillis()),
+            false,
+            mutableMapOf(Pair("looked", 1200)),
+            "Test title3"
+        ),
+        Post(
+            22342,
+            "Ansis",
+            "This is content of Post4.",
+            getHumanDate(System.currentTimeMillis()),
+            false,
+            mutableMapOf(Pair("looked", 10300)),
+            "Test title4"
+        ),
+        Post(
+            22343,
+            "Ansis",
+            "This is content of Post5.",
+            getHumanDate(System.currentTimeMillis()),
+            false,
+            mutableMapOf(Pair("looked", 100500)),
+            "Test title5"
+        ),
+        Post(
+            22344,
+            "Ansis",
+            "This is content of Post6.",
+            getHumanDate(System.currentTimeMillis()),
+            false,
+            mutableMapOf(Pair("looked", 200_000)),
+            "Test title6"
+        ),
+        Post(
+            223424,
+            "Ansis",
+            "This is content of Post7.",
+            getHumanDate(System.currentTimeMillis()),
+            false,
+            mutableMapOf(Pair("looked", 2000_000)),
+            "Test title7"
         ),
 
         )
