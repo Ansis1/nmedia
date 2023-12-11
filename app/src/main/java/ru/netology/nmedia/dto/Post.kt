@@ -6,6 +6,8 @@ data class Post(
     val content: String,
     val published: String,
     val likedByMe: Boolean,
-    val counterMap: MutableMap<String, Long>,
+    val likedCnt: Long = 0,
+    val sharedCnt: Long = 0,
+    val lookedCnt: Long = 0,
     val title: String
 )

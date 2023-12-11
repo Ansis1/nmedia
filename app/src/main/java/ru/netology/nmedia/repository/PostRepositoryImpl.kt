@@ -15,8 +15,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post1.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 90)),
-            "Test title"
+            lookedCnt = 90L,
+            title = "Test title"
         ),
         Post(
             2234,
@@ -24,8 +24,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post2.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 120)),
-            "Test title2"
+            lookedCnt = 120L,
+            title = "Test title2"
         ),
         Post(
             22341,
@@ -33,8 +33,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post3.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 1200)),
-            "Test title3"
+            lookedCnt = 1200L,
+            title = "Test title3"
         ),
         Post(
             22342,
@@ -42,8 +42,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post4.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 10300)),
-            "Test title4"
+            lookedCnt = 10300L,
+            title = "Test title4"
         ),
         Post(
             22343,
@@ -51,8 +51,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post5.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 100500)),
-            "Test title5"
+            lookedCnt = 100500,
+            title = "Test title5"
         ),
         Post(
             22344,
@@ -60,8 +60,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post6.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 200_000)),
-            "Test title6"
+            lookedCnt = 200_000,
+            title = "Test title6"
         ),
         Post(
             223424,
@@ -69,8 +69,8 @@ class PostRepositoryImpl : PostRepository {
             "This is content of Post7.",
             getHumanDate(System.currentTimeMillis()),
             false,
-            mutableMapOf(Pair("looked", 2000_000)),
-            "Test title7"
+            lookedCnt = 2000_000,
+            title = "Test title7"
         ),
 
         )
@@ -81,7 +81,7 @@ class PostRepositoryImpl : PostRepository {
         var currPost = posts.last { it.id == id }
         currPost = currPost.copy(likedByMe = !currPost.likedByMe)
         val cnt = if (currPost.likedByMe) 1L else {
-            if ((currPost.counterMap.get("liked") ?: 0) > 0) -1L else 0
+            if (currPost.likedCnt > 0) -1L else 0
         }
         changeCounters(id, "liked", cnt, currPost)
 
@@ -93,10 +93,21 @@ class PostRepositoryImpl : PostRepository {
     }
 
     private fun changeCounters(id: Long, type: String, summ: Long, thisPost: Post?) {
-        val currPost = thisPost ?: posts.last { it.id == id }.copy()
-        val prevCnt = currPost.counterMap.get(type) ?: 0
-        val currCnt = prevCnt + (if (summ == 0L) 1 else summ)
-        currPost.counterMap.put(type, currCnt)
+        var currPost = thisPost ?: posts.last { it.id == id }.copy()
+        val finalSumm = if (summ == 0L) 1 else summ
+        currPost = when (type) {
+            "liked" -> {
+                currPost.copy(likedCnt = currPost.likedCnt + finalSumm)
+            }
+
+            "looked" -> {
+                currPost.copy(lookedCnt = currPost.lookedCnt + finalSumm)
+            }
+
+            else -> {
+                currPost.copy(sharedCnt = currPost.sharedCnt + finalSumm)
+            }
+        }
         posts = posts.map {
             if (it.id != id) it else currPost
         }

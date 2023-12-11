@@ -20,9 +20,9 @@ class PostViewHolder(
             tvDatepost.text = post.published
             tvTextpost.text = post.content
 
-            tvLikesCnt.text = reloadCntCounters(post.counterMap.get("liked") ?: 0)
-            tvLookCnt.text = reloadCntCounters(post.counterMap.get("looked") ?: 0)
-            tvShareCnt.text = reloadCntCounters(post.counterMap.get("shared") ?: 0)
+            tvLikesCnt.text = reloadCntCounters(post.likedCnt)
+            tvLookCnt.text = reloadCntCounters(post.lookedCnt)
+            tvShareCnt.text = reloadCntCounters(post.sharedCnt)
 
             ibLiked.setImageResource(if (post.likedByMe) R.drawable.liked else R.drawable.like)
 
