@@ -25,7 +25,7 @@
         android:layout_marginTop="@dimen/standart_border_window_horiz"
         android:ellipsize="end"
         android:singleLine="true"
-        app:layout_constraintEnd_toStartOf="@+id/ib_moretitlepost"
+        app:layout_constraintEnd_toStartOf="@+id/ib_menu"
         app:layout_constraintStart_toEndOf="@+id/iv_logo"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_titlepost" />
 
     <ImageButton
-        android:id="@+id/ib_moretitlepost"
+        android:id="@+id/ib_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/standart_border_window_vert"

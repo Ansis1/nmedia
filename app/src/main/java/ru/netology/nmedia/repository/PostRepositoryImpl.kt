@@ -6,8 +6,6 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.getHumanDate
 
 class PostRepositoryImpl : PostRepository {
-
-
     var posts = listOf(
         Post(
             1234,
@@ -20,7 +18,7 @@ class PostRepositoryImpl : PostRepository {
         ),
         Post(
             2234,
-            "Ansis",
+            "Ansis2",
             "This is content of Post2.",
             getHumanDate(System.currentTimeMillis()),
             false,
@@ -90,6 +88,33 @@ class PostRepositoryImpl : PostRepository {
     override fun shareById(id: Long) {
 
         changeCounters(id, "shared", 10, null)
+    }
+
+    override fun save(post: Post) {
+        posts = if (post.id == 0L) {
+
+            listOf(
+
+                post.copy(
+                    id = posts.maxOf { it.id } + 1,
+                    author = "Me",
+                    likedByMe = false,
+                    published = getHumanDate(System.currentTimeMillis()))
+
+            ) + posts
+        } else {
+            posts.map {
+
+                if (it.id != post.id) it else post.copy()
+            }
+        }
+        data.value = posts
+        return
+    }
+
+    override fun removeById(id: Long) {
+        posts = posts.filter { it.id != id }
+        data.value = posts
     }
 
     private fun changeCounters(id: Long, type: String, summ: Long, thisPost: Post?) {
