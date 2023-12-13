@@ -17,17 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ru.netology.nmedia.databinding.ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var isEditingMode = false
         val viewModel: PostViewModel by viewModels()
-
-        fun prepareForChangePost(currPost: Post) {
-            isEditingMode = true
-            binding.editedPrevGroup.visibility = View.VISIBLE
-            binding.editedTitle.setText(currPost.author)
-            binding.editedPostText.setText(currPost.content)
-            binding.etNewComment.setText(currPost.content)
-            viewModel.setEditedValue(currPost)
-        }
 
         val adapter = PostsAdapter({
             viewModel.likeById(it.id) //лайк
@@ -36,8 +26,22 @@ class MainActivity : AppCompatActivity() {
         }, {
             viewModel.removeById(it.id) //удалить (popup)
         }, {
-            prepareForChangePost(it) //изменить (popup)
+            viewModel.setEditedValue(it) //изменить (popup)
         })
+
+        viewModel.edited.observe(this) {
+            if (it.id == 0L) {
+
+                binding.editedPrevGroup.visibility = View.GONE
+                return@observe
+            }
+            binding.editedTitle.setText(it.author)
+            binding.editedPostText.setText(it.content)
+            binding.etNewComment.setText(it.content)
+            binding.editedPrevGroup.visibility = View.VISIBLE
+
+
+        }
 
         binding.list.adapter = adapter
         viewModel.data.observe(this) { posts ->
@@ -60,12 +64,6 @@ class MainActivity : AppCompatActivity() {
 
                 viewModel.changeContent(text.toString())
                 viewModel.save()
-                if (isEditingMode) {
-
-                    isEditingMode = false
-                    binding.editedPrevGroup.visibility = View.GONE
-
-                }
                 setText("")
                 clearFocus()
                 AndroidUtils.hideKeyboard(this)
