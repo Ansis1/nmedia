@@ -37,7 +37,7 @@
         app:layout_constraintStart_toEndOf="@+id/iv_logo"
         app:layout_constraintTop_toBottomOf="@+id/tv_titlepost" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ib_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_logo"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/baseline_more_vert_24" />
+        app:icon="@drawable/baseline_more_vert_24"
+        style="@style/Widget.AppTheme.MainButtons"
+        />
 
     <TextView
         android:id="@+id/tv_textpost"
@@ -88,40 +90,35 @@
         android:background="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/tv_look_cnt"
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
-        app:srcCompat="@drawable/eye" />
+        app:srcCompat="@drawable/eye"
+        style="@style/Widget.AppTheme.MainButtons"/>
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ib_shared"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/tv_likes_cnt"
+        app:layout_constraintStart_toEndOf="@+id/ib_liked"
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
-        app:srcCompat="?attr/actionModeShareDrawable" />
+        app:icon="?attr/actionModeShareDrawable"
+        style="@style/Widget.AppTheme.MainButtons"
+        />
 
-    <TextView
-        android:id="@+id/tv_share_cnt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ib_shared"
-        app:layout_constraintStart_toEndOf="@+id/ib_shared"
-        app:layout_constraintTop_toTopOf="@+id/ib_shared" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ib_liked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standart_border_window_vert"
+        android:checkable="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/tv_likes_cnt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
-        app:srcCompat="@drawable/like" />
+        app:icon="@drawable/ic_like_24dp"
+        style="@style/Widget.AppTheme.LikeCheckBox"
+        />
 
     <TextView
         android:id="@+id/tv_look_cnt"
@@ -133,12 +130,5 @@
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
         app:layout_constraintTop_toTopOf="@+id/ib_looked" />
 
-    <TextView
-        android:id="@+id/tv_likes_cnt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ib_liked"
-        app:layout_constraintStart_toEndOf="@+id/ib_liked"
-        app:layout_constraintTop_toTopOf="@+id/ib_liked" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

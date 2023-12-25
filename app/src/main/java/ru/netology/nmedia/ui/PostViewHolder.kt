@@ -24,11 +24,10 @@ class PostViewHolder(
             tvDatepost.text = post.published
             tvTextpost.text = post.content
 
-            tvLikesCnt.text = reloadCntCounters(post.likedCnt)
             tvLookCnt.text = reloadCntCounters(post.lookedCnt)
-            tvShareCnt.text = reloadCntCounters(post.sharedCnt)
-
-            ibLiked.setImageResource(if (post.likedByMe) R.drawable.liked else R.drawable.like)
+            ibShared.text = reloadCntCounters(post.sharedCnt)
+            ibLiked.text = reloadCntCounters(post.likedCnt)
+            ibLiked.isChecked = post.likedByMe //сделали для селектора Checkbox'a
 
             ibShared.setOnClickListener {
                 onShareListener(post)
