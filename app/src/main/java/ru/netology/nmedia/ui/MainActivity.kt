@@ -16,8 +16,6 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    val currEditContentPost = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ru.netology.nmedia.databinding.ActivityMainBinding.inflate(layoutInflater)
