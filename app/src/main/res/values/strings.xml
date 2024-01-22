@@ -6,4 +6,6 @@
     <string name="edit_message">Edit Message</string>
     <string name="menu_change">change</string>
     <string name="not_empty_msg">Content can\'t be empty</string>
+    <string name="chooser_share_post">Choose app to share</string>
+    <string name="error_empty_content">Content is empty!</string>
 </resources>

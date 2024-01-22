@@ -7,4 +7,5 @@
     <string name="edit_message">Редактируемое сообщение</string>
     <string name="menu_change">изменить</string>
     <string name="not_empty_msg">Сообщение не может быть пустым!</string>
+    <string name="chooser_share_post">Выберите приложение для отправки текста</string>
 </resources>
