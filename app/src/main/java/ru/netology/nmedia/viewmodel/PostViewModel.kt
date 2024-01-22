@@ -1,5 +1,6 @@
 package ru.netology.nmedia.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.netology.nmedia.dto.Post
@@ -21,18 +22,19 @@ class PostViewModel : ViewModel() {
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
 
-    fun save() {
+    fun save() { //сохранение
         edited.value?.let {
             repository.save(it)
         }
         edited.value = empty
     }
 
-    fun setEditedValue(edPost: Post) {
+    fun setEditedValue(edPost: Post) { // запись измененного значения
         edited.value = edPost
     }
 
-    fun changeContent(content: String) {
+    fun changeContent(content: String) { // изменение текста
+
         edited.value?.let {
 
             val text = content.trim()
@@ -44,11 +46,12 @@ class PostViewModel : ViewModel() {
 
     }
 
-    fun cancelEditing() {
+    fun cancelEditing() { //отмена редактирования
         edited.value = empty
     }
 
     fun likeById(id: Long) = repository.likeById(id)
-    fun shareById(id: Long) = repository.shareById(id)
+    fun shareById(id: Long, ctx: Context) = repository.shareById(id, ctx)
     fun removeById(id: Long) = repository.removeById(id)
 }
+

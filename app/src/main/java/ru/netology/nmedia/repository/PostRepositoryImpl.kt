@@ -1,7 +1,11 @@
 package ru.netology.nmedia.repository
 
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.getHumanDate
 
@@ -85,9 +89,10 @@ class PostRepositoryImpl : PostRepository {
 
     }
 
-    override fun shareById(id: Long) {
+    override fun shareById(id: Long, ctx: Context) {
 
         changeCounters(id, "shared", 10, null)
+        onShare(id, ctx)
     }
 
     override fun save(post: Post) {
@@ -104,17 +109,28 @@ class PostRepositoryImpl : PostRepository {
             ) + posts
         } else {
             posts.map {
-
                 if (it.id != post.id) it else post.copy()
             }
         }
         data.value = posts
-        return
+
     }
 
     override fun removeById(id: Long) {
         posts = posts.filter { it.id != id }
         data.value = posts
+    }
+
+    override fun onShare(id: Long, ctx: Context) {
+        val currPost = posts.last { it.id == id }
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, currPost.content)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(intent, ctx.getString(R.string.chooser_share_post))
+        shareIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)
+        ctx.startActivity(shareIntent)
     }
 
     private fun changeCounters(id: Long, type: String, summ: Long, thisPost: Post?) {
