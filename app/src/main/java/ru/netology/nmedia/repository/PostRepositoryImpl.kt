@@ -3,6 +3,7 @@ package ru.netology.nmedia.repository
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.R
@@ -18,12 +19,13 @@ class PostRepositoryImpl : PostRepository {
             getHumanDate(System.currentTimeMillis()),
             false,
             lookedCnt = 90L,
-            title = "Test title"
+            title = "Test title",
+            video = "https://youtu.be/DA2S9UEGF7c"
         ),
         Post(
             2234,
             "Ansis2",
-            "This is content of Post2.",
+            "",
             getHumanDate(System.currentTimeMillis()),
             false,
             lookedCnt = 120L,
@@ -36,7 +38,8 @@ class PostRepositoryImpl : PostRepository {
             getHumanDate(System.currentTimeMillis()),
             false,
             lookedCnt = 1200L,
-            title = "Test title3"
+            title = "Test title3",
+            video = "https://youtu.be/fTdZGgrY7aE?si=UxOZsGe9nOgb3rA9"
         ),
         Post(
             22342,
@@ -128,6 +131,13 @@ class PostRepositoryImpl : PostRepository {
             putExtra(Intent.EXTRA_TEXT, currPost.content)
             type = "text/plain"
         }
+        val shareIntent = Intent.createChooser(intent, ctx.getString(R.string.chooser_share_post))
+        shareIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)
+        ctx.startActivity(shareIntent)
+    }
+
+    override fun openInBrowser(urlVideo: String, ctx: Context) { //TODO Доделать механизм вызова неявного интента
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlVideo))
         val shareIntent = Intent.createChooser(intent, ctx.getString(R.string.chooser_share_post))
         shareIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)
         ctx.startActivity(shareIntent)

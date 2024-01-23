@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         val newPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->
             result ?: return@registerForActivityResult
             viewModel.changeContent(result)
-            viewModel.save()
         }
         val adapter = PostsAdapter({
             viewModel.likeById(it.id) //лайк
@@ -34,6 +33,8 @@ class MainActivity : AppCompatActivity() {
             viewModel.removeById(it.id) //удалить (popup)
         }, {
             viewModel.setEditedValue(it) //изменить (popup)
+        }, {
+            viewModel.openInBrowser(it.video, this.applicationContext) //открыть ссылку
         })
 
         viewModel.edited.observe(this) {
@@ -47,12 +48,11 @@ class MainActivity : AppCompatActivity() {
                binding.editedPostText.setText(it.content)
                binding.etNewComment.setText(it.content)
                binding.editedPrevGroup.visibility = View.VISIBLE*/
-
-
         }
 
 
         binding.list.adapter = adapter
+
         viewModel.data.observe(this) { posts ->
             adapter.submitList(posts)
         }
@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 viewModel.changeContent(text.toString())
-                viewModel.save()
                 setText("")
                 clearFocus()
                 AndroidUtils.hideKeyboard(this)
@@ -89,6 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Класс обработки вызова активити для редактирования поста и результата.
     class EditPostResultContract : ActivityResultContract<String, String?>() {
 
         override fun createIntent(context: Context, input: String): Intent {

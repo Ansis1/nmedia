@@ -11,4 +11,5 @@ interface PostRepository {
     fun save(post: Post)
     fun removeById(id: Long) // удалить пост (скрыть из списка)
     fun onShare(id: Long, ctx: Context)
+    fun openInBrowser(urlVideo: String, ctx: Context) //Открыть ссылку в браузере
 }

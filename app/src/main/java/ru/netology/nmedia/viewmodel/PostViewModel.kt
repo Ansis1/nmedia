@@ -41,7 +41,9 @@ class PostViewModel : ViewModel() {
             if (it.content == text) {
                 return
             }
-            edited.value = it.copy(content = text)
+            repository.save(it.copy(content = text))
+            edited.value = empty
+
         }
 
     }
@@ -52,6 +54,7 @@ class PostViewModel : ViewModel() {
 
     fun likeById(id: Long) = repository.likeById(id)
     fun shareById(id: Long, ctx: Context) = repository.shareById(id, ctx)
+    fun openInBrowser(urlVideo: String, ctx: Context) = repository.openInBrowser(urlVideo, ctx)
     fun removeById(id: Long) = repository.removeById(id)
 }
 

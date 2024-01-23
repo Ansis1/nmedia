@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/standart_border_window_vert">
@@ -16,6 +17,31 @@
         app:layout_constraintBottom_toTopOf="@+id/barrier_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_video_prew"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standart_border_window_horiz"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/videoprew"
+        app:layout_constraintBottom_toTopOf="@+id/tv_textpost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_header" />
+    <ImageView
+        android:id="@+id/iv_video_play"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standart_border_window_horiz"
+        android:layout_marginBottom="8dp"
+        android:src="@android:drawable/ic_media_play"
+        app:layout_constraintBottom_toTopOf="@+id/tv_textpost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_header" />
 
     <TextView
         android:id="@+id/tv_titlepost"
@@ -53,7 +79,7 @@
 
     <TextView
         android:id="@+id/tv_textpost"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -62,7 +88,7 @@
         app:layout_constraintBottom_toTopOf="@+id/barrier_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier_header" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_video_prew" />
 
 
     <androidx.constraintlayout.widget.Barrier
