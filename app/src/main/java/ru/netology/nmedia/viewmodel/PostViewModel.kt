@@ -1,11 +1,11 @@
 package ru.netology.nmedia.viewmodel
 
-import android.content.Context
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
-import ru.netology.nmedia.repository.PostRepositoryImpl
+import ru.netology.nmedia.repository.PostRepositoryFileImpl
 
 private val empty = Post(
     id = 0,
@@ -16,9 +16,9 @@ private val empty = Post(
     title = "",
 )
 
-class PostViewModel : ViewModel() {
+class PostViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var repository: PostRepository = PostRepositoryImpl()
+    private var repository: PostRepository = PostRepositoryFileImpl(application)
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
 
@@ -47,14 +47,13 @@ class PostViewModel : ViewModel() {
         }
 
     }
-
     fun cancelEditing() { //отмена редактирования
         edited.value = empty
     }
 
     fun likeById(id: Long) = repository.likeById(id)
-    fun shareById(id: Long, ctx: Context) = repository.shareById(id, ctx)
-    fun openInBrowser(urlVideo: String, ctx: Context) = repository.openInBrowser(urlVideo, ctx)
+    fun shareById(id: Long) = repository.shareById(id)
+    fun openInBrowser(urlVideo: String) = repository.openInBrowser(urlVideo)
     fun removeById(id: Long) = repository.removeById(id)
 }
 

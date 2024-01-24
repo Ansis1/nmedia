@@ -28,13 +28,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = PostsAdapter({
             viewModel.likeById(it.id) //лайк
         }, {
-            viewModel.shareById(it.id, this.applicationContext) // поделиться
+            viewModel.shareById(it.id) // поделиться
         }, {
             viewModel.removeById(it.id) //удалить (popup)
         }, {
             viewModel.setEditedValue(it) //изменить (popup)
         }, {
-            viewModel.openInBrowser(it.video, this.applicationContext) //открыть ссылку
+            viewModel.openInBrowser(it.video) //открыть ссылку
         })
 
         viewModel.edited.observe(this) {
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts)
         }
 
-        //Сохранение или изменение (действие).
+        //Добавление или изменение (кнопка).
         binding.ibChangeOrAdd.setOnClickListener {
             with(binding.etNewComment) {
 
