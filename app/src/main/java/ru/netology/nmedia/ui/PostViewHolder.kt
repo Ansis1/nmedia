@@ -20,7 +20,7 @@ class PostViewHolder(
 
     fun bind(post: Post) {
 
-        binding.apply {
+        binding.apply { // отрисовка элементов списка
 
             tvTitlepost.text = post.author
             tvDatepost.text = post.published
@@ -50,7 +50,7 @@ class PostViewHolder(
             }
 
             ibMenu.setOnClickListener {
-                PopupMenu(it.context, it).apply {
+                PopupMenu(it.context, it).apply { // всплывающее меню через три точки
                     inflate(R.menu.options_post)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
@@ -63,7 +63,6 @@ class PostViewHolder(
                                 onEditListener(post)
                                 true
                             }
-
                             else -> false
                         }
                     }

@@ -11,7 +11,7 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.getHumanDate
 
 class PostRepositoryImpl : PostRepository {
-    var posts = listOf(
+    var posts = listOf( // Хранилище постов
         Post(
             1234,
             "Ansis",
@@ -80,7 +80,7 @@ class PostRepositoryImpl : PostRepository {
 
         )
 
-    private val data = MutableLiveData(posts)
+    private val data = MutableLiveData(posts) //контроллируемое хранилище
     override fun getAll(): LiveData<List<Post>> = data
     override fun likeById(id: Long) {
         var currPost = posts.last { it.id == id }
@@ -124,7 +124,7 @@ class PostRepositoryImpl : PostRepository {
         data.value = posts
     }
 
-    override fun onShare(id: Long, ctx: Context) {
+    override fun onShare(id: Long, ctx: Context) { //поделиться
         val currPost = posts.last { it.id == id }
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -136,7 +136,7 @@ class PostRepositoryImpl : PostRepository {
         ctx.startActivity(shareIntent)
     }
 
-    override fun openInBrowser(urlVideo: String, ctx: Context) { //TODO Доделать механизм вызова неявного интента
+    override fun openInBrowser(urlVideo: String, ctx: Context) { //открыть ссылку в браузере
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlVideo))
         val shareIntent = Intent.createChooser(intent, ctx.getString(R.string.chooser_share_post))
         shareIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)

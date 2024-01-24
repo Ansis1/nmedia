@@ -109,15 +109,14 @@
 
     <ImageButton
         android:id="@+id/ib_looked"
+        style="@style/Widget.AppTheme.MainButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/tv_look_cnt"
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
-        app:srcCompat="@drawable/eye"
-        style="@style/Widget.AppTheme.MainButtons"/>
+        app:srcCompat="@drawable/eye" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/ib_shared"
