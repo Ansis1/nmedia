@@ -29,7 +29,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = empty
     }
 
-    fun setEditedValue(edPost: Post) { // запись измененного значения
+    fun setEditedValue(edPost: Post) { // запись значения перед редактированием
         edited.value = edPost
     }
 

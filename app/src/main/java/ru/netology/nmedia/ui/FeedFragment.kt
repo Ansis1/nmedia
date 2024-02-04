@@ -1,30 +1,33 @@
 package ru.netology.nmedia.ui
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import ru.netology.nmedia.EditMsgDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
-class MainActivity : AppCompatActivity() {
+class FeedFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding = ru.netology.nmedia.databinding.ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val binding = ru.netology.nmedia.databinding.FragmentFeedBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+
         val viewModel: PostViewModel by viewModels()
-        val newPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->
-            result ?: return@registerForActivityResult
-            viewModel.changeContent(result)
-        }
         val adapter = PostsAdapter({
             viewModel.likeById(it.id) //лайк
         }, {
@@ -35,25 +38,26 @@ class MainActivity : AppCompatActivity() {
             viewModel.setEditedValue(it) //изменить (popup)
         }, {
             viewModel.openInBrowser(it.video) //открыть ссылку
+        }, {
+            openPostCard(it) //открыть карточку поста
         })
 
-        viewModel.edited.observe(this) {
+        viewModel.edited.observe(viewLifecycleOwner) {
             if (it.id == 0L) {
                 binding.editedPrevGroup.visibility = View.GONE
                 return@observe
             }
 
-            newPostLauncher.launch(it.content)
-            /*   binding.editedTitle.setText(it.author)
-               binding.editedPostText.setText(it.content)
-               binding.etNewComment.setText(it.content)
-               binding.editedPrevGroup.visibility = View.VISIBLE*/
+            findNavController().navigate(
+                R.id.action_feedFragment_to_editPostFragment,
+                Bundle().apply {
+                    putString("content", it.content)
+                })
         }
-
 
         binding.list.adapter = adapter
 
-        viewModel.data.observe(this) { posts ->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             adapter.submitList(posts)
         }
 
@@ -64,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 if (text.isNullOrBlank()) {
 
                     Toast.makeText(
-                        this@MainActivity,
+                        this.context,
                         context.getString(R.string.not_empty_msg),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -86,25 +90,27 @@ class MainActivity : AppCompatActivity() {
             }
             viewModel.cancelEditing()
         }
-    }
 
-    //Класс обработки вызова активити для редактирования поста и результата.
-    class EditPostResultContract : ActivityResultContract<String, String?>() {
+        binding.root.setOnClickListener {
 
-        override fun createIntent(context: Context, input: String): Intent {
-            val intent = Intent(context, EditMsgDialog::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT, input)
-            return intent
+
+            Toast.makeText(
+                this.context,
+                this.context?.getString(R.string.not_empty_msg) ?: "132",
+                Toast.LENGTH_SHORT
+            ).show()
         }
+        return binding.root
+    }
 
-        override fun parseResult(resultCode: Int, intent: Intent?): String? =
-            if (resultCode == Activity.RESULT_OK) {
-                intent?.getStringExtra(Intent.EXTRA_TEXT)
-            } else {
-                null
-            }
+    private fun openPostCard(post: Post) {
+
+        findNavController().navigate(R.id.action_feedFragment_to_postCardFragment, Bundle().apply {
+            putLong("id", post.id)
+        })
 
     }
+
 
 }
 

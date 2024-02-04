@@ -1,6 +1,7 @@
 package ru.netology.nmedia.ui
 
 import android.view.View
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
@@ -16,6 +17,7 @@ class PostViewHolder(
     private val onRemoveListener: OnRemoveListener,
     private val onEditListener: OnEditListener,
     private val onUrlOpenListener: onUrlOpenListener,
+    private val onPostClickListener: onPostClickListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
@@ -63,12 +65,17 @@ class PostViewHolder(
                                 onEditListener(post)
                                 true
                             }
+
                             else -> false
                         }
                     }
                 }.show()
             }
 
+            itemView.setOnClickListener {
+
+                onPostClickListener(post)
+            }
         }
 
     }
