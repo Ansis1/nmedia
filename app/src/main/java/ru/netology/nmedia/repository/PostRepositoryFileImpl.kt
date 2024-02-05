@@ -52,6 +52,10 @@ class PostRepositoryFileImpl(
 
     }
 
+    override fun getById(id: Long): Post {
+        return posts.last { it.id == id }
+    }
+
     override fun shareById(id: Long) {
 
         changeCounters(id, "shared", 10, null)

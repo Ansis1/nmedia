@@ -38,10 +38,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value?.let {
 
             val text = content.trim()
-            if (it.content == text) {
-                return
+            if (it.content != text) {
+                repository.save(it.copy(content = text))
             }
-            repository.save(it.copy(content = text))
             edited.value = empty
 
         }
@@ -55,5 +54,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun shareById(id: Long) = repository.shareById(id)
     fun openInBrowser(urlVideo: String) = repository.openInBrowser(urlVideo)
     fun removeById(id: Long) = repository.removeById(id)
+    fun getById(id: Long) = repository.getById(id)
 }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,16 @@ import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigateUp()
+        }
+        callback.isEnabled = true
+    }
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +37,8 @@ class FeedFragment : Fragment() {
             false
         )
 
-        val viewModel: PostViewModel by viewModels()
+
+
         val adapter = PostsAdapter({
             viewModel.likeById(it.id) //лайк
         }, {
@@ -39,7 +50,7 @@ class FeedFragment : Fragment() {
         }, {
             viewModel.openInBrowser(it.video) //открыть ссылку
         }, {
-            openPostCard(it) //открыть карточку поста
+            openPostCard(it.id) //открыть карточку поста
         })
 
         viewModel.edited.observe(viewLifecycleOwner) {
@@ -91,22 +102,13 @@ class FeedFragment : Fragment() {
             viewModel.cancelEditing()
         }
 
-        binding.root.setOnClickListener {
-
-
-            Toast.makeText(
-                this.context,
-                this.context?.getString(R.string.not_empty_msg) ?: "132",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
         return binding.root
     }
 
-    private fun openPostCard(post: Post) {
+    private fun openPostCard(post_id: Long) {
 
         findNavController().navigate(R.id.action_feedFragment_to_postCardFragment, Bundle().apply {
-            putLong("id", post.id)
+            putLong("id", post_id)
         })
 
     }

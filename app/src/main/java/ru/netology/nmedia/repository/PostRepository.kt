@@ -12,4 +12,5 @@ interface PostRepository {
     fun onShare(id: Long)
     fun openInBrowser(urlVideo: String) //Открыть ссылку в браузере
     fun sync()
+    fun getById(id: Long): Post
 }

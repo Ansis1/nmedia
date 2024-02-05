@@ -150,6 +150,10 @@ class PostRepositoryImpl(
 
     }
 
+    override fun getById(id: Long): Post {
+        return posts.last()
+    }
+
     private fun changeCounters(id: Long, type: String, summ: Long, thisPost: Post?) {
         var currPost = thisPost ?: posts.last { it.id == id }.copy()
         val finalSumm = if (summ == 0L) 1 else summ
