@@ -1,13 +1,15 @@
 package ru.netology.nmedia.ui
 
 import android.view.View
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.PopupMenu
+import android.widget.RelativeLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostCardBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.reloadCntCounters
+
 
 class PostViewHolder(
 
@@ -71,6 +73,9 @@ class PostViewHolder(
                     }
                 }.show()
             }
+
+            val sw_par = swTextPost.layoutParams
+            sw_par.height = 40
 
             itemView.setOnClickListener {
 
