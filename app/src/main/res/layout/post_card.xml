@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/standart_border_window_vert">
 
-
-
     <ImageView
         android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
@@ -27,7 +25,7 @@
         android:layout_marginTop="@dimen/standart_border_window_horiz"
         android:layout_marginBottom="8dp"
         android:src="@drawable/videoprew"
-        app:layout_constraintBottom_toTopOf="@+id/sw_textPost"
+        app:layout_constraintBottom_toTopOf="@+id/tv_textpost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +37,7 @@
         android:layout_marginTop="@dimen/standart_border_window_horiz"
         android:layout_marginBottom="8dp"
         android:src="@android:drawable/ic_media_play"
-        app:layout_constraintBottom_toTopOf="@+id/sw_textPost"
+        app:layout_constraintBottom_toTopOf="@+id/tv_textpost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,33 +74,20 @@
         app:layout_constraintTop_toTopOf="@+id/iv_logo"
         app:layout_constraintVertical_bias="0.0"
         app:icon="@drawable/baseline_more_vert_24"
-        style="@style/Widget.AppTheme.MainButtons"
-        />
+        style="@style/Widget.AppTheme.MainButtons" />
 
-
-    <ScrollView
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tv_textpost"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/sw_textPost"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:paddingStart="@dimen/standart_border_window_vert"
         android:paddingEnd="@dimen/standart_border_window_vert"
         app:layout_constraintBottom_toTopOf="@+id/barrier_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_video_prew">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-        <TextView
-            android:id="@+id/tv_textpost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           />
-    </LinearLayout>
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/iv_video_prew" />
 
 
     <androidx.constraintlayout.widget.Barrier
@@ -117,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="sw_textPost"
+        app:constraint_referenced_ids="tv_textpost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

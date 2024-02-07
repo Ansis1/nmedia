@@ -27,7 +27,7 @@ class PostCardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = ru.netology.nmedia.databinding.PostCardBinding.inflate(
+        val binding = ru.netology.nmedia.databinding.FragmentPostCardBinding.inflate(
             inflater,
             container,
             false
@@ -43,7 +43,7 @@ class PostCardFragment : Fragment() {
 
         var currPost = getActualPost(postId)
 
-        with(binding) {
+        with(binding.postCardFragment) {
 
             tvTextpost.setText(currPost.content)
             tvTitlepost.setText(currPost.author)

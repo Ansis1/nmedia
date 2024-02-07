@@ -74,8 +74,6 @@ class PostViewHolder(
                 }.show()
             }
 
-            val sw_par = swTextPost.layoutParams
-            sw_par.height = 40
 
             itemView.setOnClickListener {
 
