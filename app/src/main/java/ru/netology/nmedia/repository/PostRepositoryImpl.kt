@@ -10,7 +10,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.getHumanDate
 
-@Deprecated("замена на FileImpl")
+@Deprecated("замена на SQLLiteImpl")
 class PostRepositoryImpl(
     private val context: Context
 ) : PostRepository {
