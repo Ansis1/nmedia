@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import ru.netology.nmedia.dto.Post
 
 interface PostRepository {
-    fun getAll(): LiveData<List<Post>> // получить список Post
-    fun likeById(id: Long) //нажать понравилось
+    fun getAll(): LiveData<List<Post>> // получить список
+    fun likeById(id: Long) // понравилось
     fun shareById(id: Long) //поделиться
     fun save(post: Post)
-    fun removeById(id: Long) // удалить пост (скрыть из списка)
-    fun onShare(id: Long)
-    fun openInBrowser(urlVideo: String) //Открыть ссылку в браузере
-    fun sync()
+    fun removeById(id: Long) // удалить пост
+    fun openInBrowser(urlVideo: String) //Открыть видео ссылку в браузере
+    fun getById(id: Long): Post
 }

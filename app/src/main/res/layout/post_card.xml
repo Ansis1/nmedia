@@ -74,8 +74,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_logo"
         app:layout_constraintVertical_bias="0.0"
         app:icon="@drawable/baseline_more_vert_24"
-        style="@style/Widget.AppTheme.MainButtons"
-        />
+        style="@style/Widget.AppTheme.MainButtons" />
 
     <TextView
         android:id="@+id/tv_textpost"
@@ -154,6 +153,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
         app:layout_constraintTop_toTopOf="@+id/ib_looked" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
