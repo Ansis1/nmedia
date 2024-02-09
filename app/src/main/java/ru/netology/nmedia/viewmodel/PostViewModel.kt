@@ -11,7 +11,7 @@ import ru.netology.nmedia.repository.PostRepositorySQLiteRoomImpl
 private val empty = Post(
     id = 0,
     content = "",
-    author = "",
+    author = "Me", //TODO unhardcore
     likedByMe = false,
     published = "",
     title = "",

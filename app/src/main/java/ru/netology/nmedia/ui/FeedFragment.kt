@@ -84,7 +84,6 @@ class FeedFragment : Fragment() {
                     ).show()
                     return@setOnClickListener
                 }
-
                 viewModel.changeContent(text.toString())
                 setText("")
                 clearFocus()
