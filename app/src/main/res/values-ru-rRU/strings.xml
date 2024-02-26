@@ -9,4 +9,8 @@
     <string name="not_empty_msg">Сообщение не может быть пустым!</string>
     <string name="chooser_share_post">Выберите приложение для отправки текста</string>
     <string name="error_empty_content">Не указано содержимое поста!</string>
+    <string name="google_api_unavailable">Сервисы Google не поддерживаются данным устройством. Работа приложения невозможна.</string>
+    <string name="notification_new_post">%1$s опубликовал новый пост</string>
+    <string name="notification_new_like">%1$s понравился пост %2$s</string>
+    <string name="notification_new_like_title">новые лайки</string>
 </resources>
