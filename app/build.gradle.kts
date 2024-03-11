@@ -12,6 +12,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    //var usesClearTextTraffic = false
 
     defaultConfig {
         applicationId = "ru.netology.nmedia"
@@ -19,17 +20,22 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        manifestPlaceholders.put("usesCleartextTraffic", false)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            manifestPlaceholders.put("usesCleartextTraffic", false)
+        }
+        debug {
+            manifestPlaceholders.put("usesCleartextTraffic", false)
         }
     }
     compileOptions {
@@ -61,6 +67,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-inappmessaging-display-ktx")
     implementation("com.google.android.gms:play-services-base:18.3.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

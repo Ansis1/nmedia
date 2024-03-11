@@ -41,7 +41,7 @@ class PostCardFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        var currPost = getActualPost(postId)
+        var currPost = viewModel.getById(postId ?: 0)
 
         with(binding.postCardFragment) {
 
@@ -64,7 +64,7 @@ class PostCardFragment : Fragment() {
                 ibShared.text = reloadCntCounters(currPost.sharedCnt)
             }
             ibLiked.setOnClickListener {
-                viewModel.likeById(currPost.id) //лайк
+                viewModel.likeById(currPost.id, currPost.likedByMe) //лайк
                 currPost = getActualPost(postId)
                 ibLiked.text = reloadCntCounters(currPost.likedCnt)
             }
@@ -89,7 +89,7 @@ class PostCardFragment : Fragment() {
                             }
 
                             R.id.it_edit -> {
-                                viewModel.setEditedValue(currPost)
+                                viewModel.edit(currPost)
                                 findNavController().navigate(
                                     R.id.action_postCardFragment_to_editPostFragment,
                                     Bundle().apply {
@@ -109,7 +109,4 @@ class PostCardFragment : Fragment() {
         return binding.root
     }
 
-    private fun getActualPost(postId: Long?): Post {
-        return viewModel.getById(postId ?: 0)
-    }
 }

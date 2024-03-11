@@ -13,25 +13,23 @@ typealias OnEditListener = (post: Post) -> Unit
 typealias onUrlOpenListener = (post: Post) -> Unit
 typealias onPostClickListener = (post: Post) -> Unit
 
+interface OnInteractionListener {
+    fun onLike(post: Post) {}
+    fun onEdit(post: Post) {}
+    fun onRemove(post: Post) {}
+    fun onShare(post: Post) {}
+    fun onUrlOpen(post: Post) {}
+    fun onPostClick(post: Post) {}
+}
 class PostsAdapter(
-    private val onLikeListener: OnLikeListener,
-    private val onShareListener: OnShareListener,
-    private val onRemoveListener: OnRemoveListener,
-    private val onEditListener: OnEditListener,
-    private val onUrlOpenListener: onUrlOpenListener,
-    private val onPostClickListener: onPostClickListener
+    private val onInteractionListener: OnInteractionListener,
 ) : ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = PostCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(
             binding,
-            onLikeListener,
-            onShareListener,
-            onRemoveListener,
-            onEditListener,
-            onUrlOpenListener,
-            onPostClickListener
+            onInteractionListener
         )
     }
 

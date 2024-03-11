@@ -1,5 +1,6 @@
 package ru.netology.nmedia.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -21,14 +23,16 @@ class FeedFragment : Fragment() {
         }
         callback.isEnabled = true
     }
+
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = ru.netology.nmedia.databinding.FragmentFeedBinding.inflate(
             inflater,
@@ -37,20 +41,33 @@ class FeedFragment : Fragment() {
         )
 
 
+        val adapter = PostsAdapter(object : OnInteractionListener {
+            override fun onUrlOpen(post: Post) {
+                viewModel.openInBrowser(post.video)
+            }
 
-        val adapter = PostsAdapter({
-            viewModel.likeById(it.id) //лайк
-        }, {
-            viewModel.shareById(it.id) // поделиться
-        }, {
-            viewModel.removeById(it.id) //удалить (popup)
-        }, {
-            viewModel.setEditedValue(it) //изменить (popup)
-        }, {
-            viewModel.openInBrowser(it.video) //открыть ссылку
-        }, {
-            openPostCard(it.id) //открыть карточку поста
+            override fun onPostClick(post: Post) {
+                openPostCard(post.id)
+            }
+
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+            }
+
+            override fun onLike(post: Post) {
+                viewModel.likeById(post.id, post.likedByMe)
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removeById(post.id)
+            }
+
+            override fun onShare(post: Post) {
+
+                viewModel.shareById(post.id)
+            }
         })
+
 
         viewModel.edited.observe(viewLifecycleOwner) {
             if (it.id == 0L) {
@@ -66,10 +83,13 @@ class FeedFragment : Fragment() {
         }
 
         binding.list.adapter = adapter
-
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            adapter.submitList(posts)
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+            binding.progress.isVisible = state.loading
+            binding.errorGroup.isVisible = state.error
+            binding.emptyText.isVisible = state.empty
         }
+
 
         //Добавление или изменение (кнопка).
         binding.ibChangeOrAdd.setOnClickListener {
@@ -101,6 +121,16 @@ class FeedFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    binding.retryButton.setOnClickListener
+    {
+        viewModel.loadPosts()
+    }
+
+    binding.fab.setOnClickListener
+    {
+        findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
     }
 
     private fun openPostCard(post_id: Long) {

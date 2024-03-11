@@ -12,14 +12,8 @@ import ru.netology.nmedia.utils.reloadCntCounters
 
 
 class PostViewHolder(
-
     private val binding: PostCardBinding,
-    private val onLikeListener: OnLikeListener,
-    private val onShareListener: OnShareListener,
-    private val onRemoveListener: OnRemoveListener,
-    private val onEditListener: OnEditListener,
-    private val onUrlOpenListener: onUrlOpenListener,
-    private val onPostClickListener: onPostClickListener,
+    private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
@@ -39,18 +33,18 @@ class PostViewHolder(
                 ivVideoPlay.visibility = View.GONE
             }
             ibShared.setOnClickListener {
-                onShareListener(post)
+                onInteractionListener.onShare(post)
             }
             ibLiked.setOnClickListener {
-                onLikeListener(post)
+                onInteractionListener.onLike(post)
             }
 
             ivVideoPrew.setOnClickListener {
-                onUrlOpenListener(post)
+                onInteractionListener.onUrlOpen(post)
             }
 
             ivVideoPlay.setOnClickListener {
-                onUrlOpenListener(post)
+                onInteractionListener.onUrlOpen(post)
             }
 
             ibMenu.setOnClickListener {
@@ -59,12 +53,12 @@ class PostViewHolder(
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.it_remove -> {
-                                onRemoveListener(post)
+                                onInteractionListener.onRemove(post)
                                 true
                             }
 
                             R.id.it_edit -> {
-                                onEditListener(post)
+                                onInteractionListener.onEdit(post)
                                 true
                             }
 
@@ -77,7 +71,7 @@ class PostViewHolder(
 
             itemView.setOnClickListener {
 
-                onPostClickListener(post)
+                onInteractionListener.onPostClick(post)
             }
         }
 
