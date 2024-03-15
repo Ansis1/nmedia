@@ -27,16 +27,13 @@ class PostRepositorySQLiteRoomImpl(
 
     companion object {
 
-        private const val BASE_URL = "http://10.0.2.2:9999"
+        private const val BASE_URL = "http://192.168.1.148:9999"
         private val jsonType = "application/json".toMediaType()
-
-
-
     }
 
     override fun getAll(): List<Post> {
         val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/posts")
+            .url("${BASE_URL}/api/slow/posts")
             .build()
         return client.newCall(request)
             .execute()

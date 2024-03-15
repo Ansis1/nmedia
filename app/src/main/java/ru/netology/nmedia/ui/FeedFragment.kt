@@ -14,6 +14,9 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
+
+    private val viewModel: PostViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -22,7 +25,6 @@ class FeedFragment : Fragment() {
         callback.isEnabled = true
     }
 
-    private val viewModel: PostViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +73,7 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
-            binding.retryButton.isVisible = (state.error || state.empty)
+            //binding.retryButton.isVisible = (state.error || state.empty)
         }
 
         binding.retryButton.setOnClickListener {

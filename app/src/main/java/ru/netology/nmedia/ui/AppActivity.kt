@@ -11,13 +11,12 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import ru.netology.nmedia.R
 
-class AppActivity : AppCompatActivity() {
+class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkGoogleApiAvailability()
-        setContentView(R.layout.activity_app)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val name = getString(R.string.channel_remote_name1)
