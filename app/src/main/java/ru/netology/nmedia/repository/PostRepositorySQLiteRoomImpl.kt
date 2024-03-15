@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,29 +19,30 @@ class PostRepositorySQLiteRoomImpl(
 ) : PostRepository {
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(10, TimeUnit.SECONDS)
         .build()
     private val gson = Gson()
+    private val typeListPost = object : TypeToken<List<Post>>() {}
+    private val typePost = object : TypeToken<Post>() {}
 
     companion object {
 
         private const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
-        private val typeListPost: TypeToken<List<Post>> = object : TypeToken<List<Post>>() {}
-        private val typePost: TypeToken<Post> = object : TypeToken<Post>() {}
+
 
 
     }
 
     override fun getAll(): List<Post> {
         val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/slow/posts")
+            .url("${BASE_URL}/api/posts")
             .build()
         return client.newCall(request)
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let {
-                gson.fromJson(it, typeListPost)
+                gson.fromJson(it, typeListPost.type)
             }
 
     }
@@ -62,7 +62,7 @@ class PostRepositorySQLiteRoomImpl(
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let {
-                gson.fromJson(it, typePost)
+                gson.fromJson(it, typePost.type)
             }
 
     }

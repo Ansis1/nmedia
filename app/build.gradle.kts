@@ -12,7 +12,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    //var usesClearTextTraffic = false
+    var usesClearTextTraffic = false
 
     defaultConfig {
         applicationId = "ru.netology.nmedia"

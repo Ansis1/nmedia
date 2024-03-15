@@ -19,9 +19,8 @@
     </fragment>
     <fragment
         android:id="@+id/editPostFragment"
-        android:name="ru.netology.nmedia.ui.EditPostFragment"
-        android:label="fragment_editpost"
-        tools:layout="@layout/fragment_editpost" />
+        android:name="ru.netology.nmedia.ui.NewPostOrEditFragment"
+        android:label="fragment_editpost" />
     <fragment
         android:id="@+id/postCardFragment"
         android:name="ru.netology.nmedia.ui.PostCardFragment"

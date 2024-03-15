@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
-import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.reloadCntCounters
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -60,12 +59,12 @@ class PostCardFragment : Fragment() {
             }
             ibShared.setOnClickListener {
                 viewModel.shareById(currPost.id) // поделиться
-                currPost = getActualPost(postId)
+                currPost = viewModel.getById(postId ?: 0)
                 ibShared.text = reloadCntCounters(currPost.sharedCnt)
             }
             ibLiked.setOnClickListener {
                 viewModel.likeById(currPost.id, currPost.likedByMe) //лайк
-                currPost = getActualPost(postId)
+                currPost = viewModel.getById(postId ?: 0)
                 ibLiked.text = reloadCntCounters(currPost.likedCnt)
             }
 

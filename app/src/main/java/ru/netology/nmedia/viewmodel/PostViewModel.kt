@@ -47,6 +47,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             try {
 
                 val posts = repository.getAll()
+
                 FeedModel(posts = posts, empty = posts.isEmpty())
 
             } catch (e: IOException) {
@@ -55,6 +56,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }.also {
 
                 _data::postValue
+
             }
         }
 
@@ -127,7 +129,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun shareById(id: Long) = repository.shareById(id)
     fun openInBrowser(urlVideo: String) = repository.openInBrowser(urlVideo)
 
-    fun getById(id: Long) =
-        thread { repository.getById(id) }
+    fun getById(id: Long): Post =
+        repository.getById(id)
 }
 

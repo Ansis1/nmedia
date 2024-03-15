@@ -13,4 +13,6 @@
     <string name="notification_new_post">%1$s опубликовал новый пост</string>
     <string name="notification_new_like">%1$s понравился пост %2$s</string>
     <string name="notification_new_like_title">новые лайки</string>
+    <string name="retry_loading">загрузка постов..</string>
+    <string name="error_loading">ошибка при загрузке постов..</string>
 </resources>

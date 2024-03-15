@@ -84,11 +84,24 @@
         android:layout_marginBottom="8dp"
         android:paddingStart="@dimen/standart_border_window_vert"
         android:paddingEnd="@dimen/standart_border_window_vert"
-        app:layout_constraintBottom_toTopOf="@+id/barrier_footer"
+        app:layout_constraintBottom_toTopOf="@+id/et_textpost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_video_prew" />
 
+    <EditText
+        android:id="@+id/et_textpost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingStart="@dimen/standart_border_window_vert"
+        android:paddingEnd="@dimen/standart_border_window_vert"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/barrier_footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_textpost" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_header"
@@ -154,6 +167,43 @@
         app:layout_constraintTop_toBottomOf="@+id/barrier_footer"
         app:layout_constraintTop_toTopOf="@+id/ib_looked" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="ib_liked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_ok"
+        style="@style/Widget.AppTheme.MainButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/ib_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier_buttons"
+        app:srcCompat="@drawable/check" />
+
+    <ImageButton
+        android:id="@+id/ib_cancel"
+        style="@style/Widget.AppTheme.MainButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleX="-1"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ib_ok"
+        app:layout_constraintTop_toBottomOf="@+id/barrier_buttons"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
