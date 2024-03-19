@@ -1,12 +1,14 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.*
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
-import ru.netology.nmedia.repository.*
+import ru.netology.nmedia.repository.PostRepository
+import ru.netology.nmedia.repository.PostRepositorySQLiteRoomImpl
 import ru.netology.nmedia.util.SingleLiveEvent
 import java.io.IOException
 import kotlin.concurrent.thread
@@ -16,7 +18,8 @@ private val empty = Post(
     content = "",
     author = "Me", //TODO unhardcore
     likedByMe = false,
-    published = "",
+    likes = 0,
+    published = 0,
     title = "",
 )
 
@@ -52,11 +55,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: IOException) {
 
                 FeedModel(error = true)
-            }.also {
+            }.also(_data::postValue)
 
-                _data::postValue
-
-            }
         }
 
 
@@ -77,6 +77,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun edit(edPost: Post) { // запись значения перед редактированием
+        Log.i("e", "" + edPost.title)
         edited.value = edPost
     }
 
@@ -97,7 +98,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun likeById(id: Long, isLiked: Boolean) {
         thread {
-            repository.likeById(id, isLiked)
+            val lkdPost = repository.likeById(id, isLiked)
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                    .filter { it.id != lkdPost.id } + lkdPost
+                ))
+            repository.save(lkdPost)
+
         }
     }
 
@@ -125,7 +132,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun shareById(id: Long) = repository.shareById(id)
+    fun shareById(id: Long, content: String) = repository.shareById(id, content)
     fun openInBrowser(urlVideo: String) = repository.openInBrowser(urlVideo)
 
     fun getById(id: Long): Post =

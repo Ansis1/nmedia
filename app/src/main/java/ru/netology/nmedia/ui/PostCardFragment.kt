@@ -46,11 +46,11 @@ class PostCardFragment : Fragment() {
 
             tvTextpost.setText(currPost.content)
             tvTitlepost.setText(currPost.author)
-            tvDatepost.setText(currPost.published)
+            tvDatepost.setText(ru.netology.nmedia.utils.getHumanDate(currPost.published))
 
             tvLookCnt.text = reloadCntCounters(currPost.lookedCnt)
             ibShared.text = reloadCntCounters(currPost.sharedCnt)
-            ibLiked.text = reloadCntCounters(currPost.likedCnt)
+            ibLiked.text = reloadCntCounters(currPost.likes)
             ibLiked.isChecked = currPost.likedByMe
 
             if (currPost.video.isBlank()) {
@@ -58,14 +58,14 @@ class PostCardFragment : Fragment() {
                 ivVideoPlay.visibility = View.GONE
             }
             ibShared.setOnClickListener {
-                viewModel.shareById(currPost.id) // поделиться
+                viewModel.shareById(currPost.id, currPost.content) // поделиться
                 currPost = viewModel.getById(postId ?: 0)
                 ibShared.text = reloadCntCounters(currPost.sharedCnt)
             }
             ibLiked.setOnClickListener {
                 viewModel.likeById(currPost.id, currPost.likedByMe) //лайк
                 currPost = viewModel.getById(postId ?: 0)
-                ibLiked.text = reloadCntCounters(currPost.likedCnt)
+                ibLiked.text = reloadCntCounters(currPost.likes)
             }
 
             ivVideoPrew.setOnClickListener {

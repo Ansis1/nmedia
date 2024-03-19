@@ -2,8 +2,6 @@ package ru.netology.nmedia.ui
 
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostCardBinding
@@ -21,14 +19,14 @@ class PostViewHolder(
         binding.apply { // отрисовка элементов списка
 
             tvTitlepost.text = post.author
-            tvDatepost.text = post.published
+            tvDatepost.text = ru.netology.nmedia.utils.getHumanDate(post.published)
             tvTextpost.text = post.content
 
             tvLookCnt.text = reloadCntCounters(post.lookedCnt)
             ibShared.text = reloadCntCounters(post.sharedCnt)
-            ibLiked.text = reloadCntCounters(post.likedCnt)
+            ibLiked.text = reloadCntCounters(post.likes)
             ibLiked.isChecked = post.likedByMe //сделали для селектора Checkbox'a)
-            if (post.video.isBlank()) {
+            if (post.video != null && post.video.isBlank()) {
                 ivVideoPrew.visibility = View.GONE
                 ivVideoPlay.visibility = View.GONE
             }

@@ -27,7 +27,7 @@ class PostRepositorySQLiteRoomImpl(
 
     companion object {
 
-        private const val BASE_URL = "http://192.168.1.148:9999"
+        private const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
     }
 
@@ -48,11 +48,12 @@ class PostRepositorySQLiteRoomImpl(
     override fun likeById(id: Long, isLiked: Boolean): Post {
 
         val request: Request = Request.Builder().apply {
-            url("${BASE_URL}/api/slow/posts/$id/likes")
-
             if (isLiked) {
                 delete()
+            } else {
+                post("".toRequestBody())
             }
+            url("${BASE_URL}/api/slow/posts/$id/likes")
 
         }.build()
         return client.newCall(request)
@@ -60,21 +61,23 @@ class PostRepositorySQLiteRoomImpl(
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let {
                 gson.fromJson(it, typePost.type)
+
             }
 
     }
 
-    override fun save(post: Post) { //сохранить
+    override fun save(post: Post): Post { //сохранить
         val request: Request = Request.Builder()
             .post(gson.toJson(post).toRequestBody(jsonType))
             .url("${BASE_URL}/api/slow/posts")
             .build()
 
-        client.newCall(request)
+        return client.newCall(request)
             .execute()
-            .close()
-        //TODO обновление поста локально после ответа
-
+            .let { it.body?.string() ?: throw RuntimeException("body is null") }
+            .let {
+                gson.fromJson(it, typePost)
+            }
     }
 
     override fun removeById(id: Long) { // Скрыть с экрана
@@ -106,11 +109,11 @@ class PostRepositorySQLiteRoomImpl(
     }
 
 
-    override fun shareById(id: Long) { // поделиться
+    override fun shareById(id: Long, content: String) { // поделиться
 
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, getById(id).content)
+            putExtra(Intent.EXTRA_TEXT, content)
             type = "text/plain"
         }
         val shareIntent =

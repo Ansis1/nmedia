@@ -50,6 +50,12 @@ class FeedFragment : Fragment() {
 
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_editPostFragment,
+                    Bundle().apply {
+                        putLong("id", post.id)
+                        putString("content", post.content)
+                    })
             }
 
             override fun onLike(post: Post) {
@@ -62,7 +68,7 @@ class FeedFragment : Fragment() {
 
             override fun onShare(post: Post) {
 
-                viewModel.shareById(post.id)
+                viewModel.shareById(post.id, post.content)
             }
         })
 
@@ -81,11 +87,10 @@ class FeedFragment : Fragment() {
     }
 
         binding.fab.setOnClickListener {
+            viewModel.cancelEditing()
             findNavController().navigate(
                 R.id.action_feedFragment_to_editPostFragment,
-                Bundle().apply {
-                    putString("content", "")
-                })
+            )
     }
         return binding.root
     }

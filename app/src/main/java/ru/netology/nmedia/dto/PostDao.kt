@@ -22,13 +22,13 @@ interface PostDao {
         if (post.id == 0L) insert(
             post.copy(
                 author = "Ansis",
-                published = getHumanDate(System.currentTimeMillis())
+                published = System.currentTimeMillis()
             )
         ) else updateContentById(post.id, post.content)
 
     @Query(
         """ UPDATE PostEntity SET 
-        likedCnt = likedCnt + CASE WHEN likedByMe THEN -1 ELSE 1 END,
+        likes = likes + CASE WHEN likedByMe THEN -1 ELSE 1 END,
         likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
         WHERE id = :id
         """

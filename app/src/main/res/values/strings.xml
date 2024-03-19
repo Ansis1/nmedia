@@ -16,6 +16,6 @@
     <string name="notification_new_like">%1$s liked post %2$s</string>
     <string name="notification_new_like_title">new likes</string>
     <string name="empty_posts" translatable="false" />
-    <string name="retry_loading">loading posts..</string>
+    <string name="retry_loading">retry</string>
     <string name="error_loading">loading error..</string>
 </resources>
