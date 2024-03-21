@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -19,7 +19,9 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 class NewPostOrEditFragment : Fragment() {
 
 
-    private val model: PostViewModel by activityViewModels()
+    private val model: PostViewModel by viewModels(
+        ownerProducer = ::requireActivity
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,16 +81,10 @@ class NewPostOrEditFragment : Fragment() {
             }
 
             AndroidUtils.hideKeyboard(requireView())
-            if (postId == 0L) {
                 model.postCreated.observe(viewLifecycleOwner) {
                     model.loadPosts()
                 }
-            } else {
 
-                model.data.observe(viewLifecycleOwner) {
-                    model.loadPosts()
-                }
-            }
         }
 
         binding.postCardFragment.ibCancel.setOnClickListener {

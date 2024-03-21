@@ -1,6 +1,7 @@
 package ru.netology.nmedia.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 class PostCardFragment : Fragment() {
 
     private val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
+        ownerProducer = ::requireActivity
     )
 
     override fun onCreateView(
@@ -32,6 +33,8 @@ class PostCardFragment : Fragment() {
             false
         )
         val postId = arguments?.getLong("id", Long.MIN_VALUE)
+        Log.i("post", "postId $postId")
+
         if (postId?.equals(Long.MIN_VALUE) == true) {
             Snackbar.make(
                 binding.root, R.string.error_empty_content,
@@ -40,7 +43,8 @@ class PostCardFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        var currPost = viewModel.getById(postId ?: 0)
+        var currPost = viewModel.getById(postId ?: 0)!!
+
 
         with(binding.postCardFragment) {
 
@@ -59,13 +63,14 @@ class PostCardFragment : Fragment() {
             }
             ibShared.setOnClickListener {
                 viewModel.shareById(currPost.id, currPost.content) // поделиться
-                currPost = viewModel.getById(postId ?: 0)
+                currPost = viewModel.getById(postId ?: 0)!!
                 ibShared.text = reloadCntCounters(currPost.sharedCnt)
             }
             ibLiked.setOnClickListener {
                 viewModel.likeById(currPost.id, currPost.likedByMe) //лайк
-                currPost = viewModel.getById(postId ?: 0)
+                currPost = viewModel.getById(postId ?: 0)!!
                 ibLiked.text = reloadCntCounters(currPost.likes)
+                ibLiked.isChecked = currPost.likedByMe
             }
 
             ivVideoPrew.setOnClickListener {

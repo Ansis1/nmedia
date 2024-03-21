@@ -14,7 +14,7 @@ data class PostEntity(
     val likes: Long,
     val sharedCnt: Long,
     val lookedCnt: Long,
-    val title: String = "",
+    val title: String,
     val video: String,
     val published: Long,
 
@@ -40,12 +40,11 @@ data class PostEntity(
             post.content,
             post.likedByMe,
             post.likes,
-            0,
-            0,
-            "",
-            "",
+            post.sharedCnt,
+            post.lookedCnt,
+            post.title ?: "",
+            post.video ?: "",
             post.published
-
         )
     }
 

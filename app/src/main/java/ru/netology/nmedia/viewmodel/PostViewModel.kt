@@ -1,7 +1,6 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -77,7 +76,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun edit(edPost: Post) { // запись значения перед редактированием
-        Log.i("e", "" + edPost.title)
         edited.value = edPost
     }
 
@@ -135,7 +133,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun shareById(id: Long, content: String) = repository.shareById(id, content)
     fun openInBrowser(urlVideo: String) = repository.openInBrowser(urlVideo)
 
-    fun getById(id: Long): Post =
-        repository.getById(id)
+    fun getById(id: Long): Post? =
+
+        _data.value?.posts?.last { it.id == id }
+    ///  repository.getById(id)
 }
 

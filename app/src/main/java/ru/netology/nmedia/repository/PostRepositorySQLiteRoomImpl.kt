@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
@@ -19,7 +20,7 @@ class PostRepositorySQLiteRoomImpl(
 ) : PostRepository {
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
         .build()
     private val gson = Gson()
     private val typeListPost = object : TypeToken<List<Post>>() {}
@@ -89,21 +90,20 @@ class PostRepositorySQLiteRoomImpl(
         client.newCall(request)
             .execute()
             .close()
-
-        //TODO скрытие поста локально после ответа
     }
 
     override fun getById(id: Long): Post {
 
         val request: Request = Request.Builder()
-            .get()
             .url("${BASE_URL}/api/slow/posts/$id")
             .build()
+        Log.i("post", "url ${BASE_URL}/api/slow/posts/$id")
+
         return client.newCall(request)
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let {
-                gson.fromJson(it, typePost)
+                gson.fromJson(it, typePost.type)
             }
 
     }
