@@ -101,7 +101,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _data.value?.copy(posts = _data.value?.posts.orEmpty()
                     .filter { it.id != lkdPost.id } + lkdPost
                 ))
-            repository.save(lkdPost)
 
         }
     }

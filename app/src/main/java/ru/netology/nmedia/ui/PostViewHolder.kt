@@ -26,7 +26,7 @@ class PostViewHolder(
             ibShared.text = reloadCntCounters(post.sharedCnt)
             ibLiked.text = reloadCntCounters(post.likes)
             ibLiked.isChecked = post.likedByMe //сделали для селектора Checkbox'a)
-            if (post.video != null && post.video.isBlank()) {
+            if (post.video.isBlank()) {
                 ivVideoPrew.visibility = View.GONE
                 ivVideoPlay.visibility = View.GONE
             }

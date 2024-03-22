@@ -18,4 +18,6 @@
     <string name="empty_posts" translatable="false" />
     <string name="retry_loading">retry</string>
     <string name="error_loading">loading error..</string>
+    <string name="hint_text_input">enter post\'s text</string>
+    <string name="hint_url_video_input">write url of video here..</string>
 </resources>

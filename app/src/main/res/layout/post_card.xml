@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/standart_border_window_horiz"
         android:layout_marginBottom="8dp"
         android:src="@drawable/videoprew"
-        app:layout_constraintBottom_toTopOf="@+id/tv_textpost"
+        app:layout_constraintBottom_toTopOf="@+id/et_url_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,10 +83,26 @@
         android:layout_marginBottom="8dp"
         android:paddingStart="@dimen/standart_border_window_vert"
         android:paddingEnd="@dimen/standart_border_window_vert"
-        app:layout_constraintBottom_toTopOf="@+id/et_textpost"
+        app:layout_constraintBottom_toTopOf="@+id/et_url_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_video_prew" />
+
+
+    <EditText
+        android:id="@+id/et_url_video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingStart="@dimen/standart_border_window_vert"
+        android:paddingEnd="@dimen/standart_border_window_vert"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tv_textpost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_video_prew" />
+
 
     <EditText
         android:id="@+id/et_textpost"
@@ -100,7 +116,7 @@
         app:layout_constraintBottom_toTopOf="@+id/barrier_footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_textpost" />
+        app:layout_constraintTop_toBottomOf="@+id/et_url_video" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_header"

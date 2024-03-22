@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -19,9 +19,7 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 class NewPostOrEditFragment : Fragment() {
 
 
-    private val model: PostViewModel by viewModels(
-        ownerProducer = ::requireActivity
-    )
+    private val model: PostViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,9 +55,15 @@ class NewPostOrEditFragment : Fragment() {
             ibOk.visibility = View.VISIBLE
             ibCancel.visibility = View.VISIBLE
             etTextpost.visibility = View.VISIBLE
+            etUrlVideo.visibility = View.VISIBLE
+            etUrlVideo.setHint(getString(R.string.hint_url_video_input))
+
             ibLiked.visibility = View.GONE
             ibLooked.visibility = View.GONE
             ibShared.visibility = View.GONE
+            ivVideoPrew.visibility = View.GONE
+            ivVideoPlay.visibility = View.GONE
+            etTextpost.setHint(getString(R.string.hint_text_input))
         }
 
         binding.postCardFragment.ibOk.setOnClickListener {
@@ -77,12 +81,14 @@ class NewPostOrEditFragment : Fragment() {
                 }
                 model.changeContent(etTextpost.text.toString())
                 model.save()
-                findNavController().navigateUp()
+                it.visibility = View.GONE
+                binding.postCardFragment.ibCancel.visibility = View.GONE
             }
 
             AndroidUtils.hideKeyboard(requireView())
                 model.postCreated.observe(viewLifecycleOwner) {
                     model.loadPosts()
+                    findNavController().navigateUp()
                 }
 
         }

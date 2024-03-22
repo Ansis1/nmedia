@@ -15,4 +15,6 @@
     <string name="notification_new_like_title">новые лайки</string>
     <string name="retry_loading">повторить</string>
     <string name="error_loading">ошибка при загрузке постов..</string>
+    <string name="hint_text_input">текст поста..</string>
+    <string name="hint_url_video_input">вставьте ссылку на видео здесь..</string>
 </resources>
