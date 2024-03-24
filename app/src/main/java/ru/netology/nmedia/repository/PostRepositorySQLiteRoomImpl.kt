@@ -40,6 +40,7 @@ class PostRepositorySQLiteRoomImpl(
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let {
+                Log.i("post1", it)
                 gson.fromJson(it, typeListPost.type)
             }
 

@@ -1,5 +1,6 @@
 package ru.netology.nmedia.ui
 
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ class PostViewHolder(
             ibShared.text = reloadCntCounters(post.sharedCnt)
             ibLiked.text = reloadCntCounters(post.likes)
             ibLiked.isChecked = post.likedByMe //сделали для селектора Checkbox'a)
+            Log.i("post2", post.toString())
             if (post.video.isBlank()) {
                 ivVideoPrew.visibility = View.GONE
                 ivVideoPlay.visibility = View.GONE
