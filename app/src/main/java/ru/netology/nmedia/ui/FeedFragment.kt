@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
-import ru.netology.nmedia.utils.AndroidUtils
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
+
+    private val viewModel: PostViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -21,14 +24,13 @@ class FeedFragment : Fragment() {
         }
         callback.isEnabled = true
     }
-    private val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = ru.netology.nmedia.databinding.FragmentFeedBinding.inflate(
             inflater,
@@ -37,72 +39,61 @@ class FeedFragment : Fragment() {
         )
 
 
+        val adapter = PostsAdapter(object : OnInteractionListener {
+            override fun onUrlOpen(post: Post) {
+                viewModel.openInBrowser(post.video)
+            }
 
-        val adapter = PostsAdapter({
-            viewModel.likeById(it.id) //лайк
-        }, {
-            viewModel.shareById(it.id) // поделиться
-        }, {
-            viewModel.removeById(it.id) //удалить (popup)
-        }, {
-            viewModel.setEditedValue(it) //изменить (popup)
-        }, {
-            viewModel.openInBrowser(it.video) //открыть ссылку
-        }, {
-            openPostCard(it.id) //открыть карточку поста
+            override fun onPostClick(post: Post) {
+                openPostCard(post.id)
+            }
+
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_editPostFragment,
+                    Bundle().apply {
+                        putLong("id", post.id)
+                        putString("content", post.content)
+                    })
+            }
+
+            override fun onLike(post: Post) {
+                viewModel.likeById(post.id, post.likedByMe)
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removeById(post.id)
+            }
+
+            override fun onShare(post: Post) {
+
+                viewModel.shareById(post.id, post.content)
+            }
         })
 
-        viewModel.edited.observe(viewLifecycleOwner) {
-            if (it.id == 0L) {
-                binding.editedPrevGroup.visibility = View.GONE
-                return@observe
-            }
-
-            findNavController().navigate(
-                R.id.action_feedFragment_to_editPostFragment,
-                Bundle().apply {
-                    putString("content", it.content)
-                })
-        }
 
         binding.list.adapter = adapter
-
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            adapter.submitList(posts)
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.posts)
+            binding.progress.isVisible = state.loading
+            binding.errorGroup.isVisible = state.error
+            binding.emptyText.isVisible = state.empty
+            //binding.retryButton.isVisible = (state.error || state.empty)
         }
 
-        //Добавление или изменение (кнопка).
-        binding.ibChangeOrAdd.setOnClickListener {
-            with(binding.etNewComment) {
-
-                if (text.isNullOrBlank()) {
-
-                    Toast.makeText(
-                        this.context,
-                        context.getString(R.string.not_empty_msg),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                viewModel.changeContent(text.toString())
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-            }
-        }
-
-        //Отмена редактирования
-        binding.ibCancelEditing.setOnClickListener {
-            with(binding) {
-                editedPrevGroup.visibility = View.GONE
-                etNewComment.setText("")
-            }
-            viewModel.cancelEditing()
-        }
-
-        return binding.root
+        binding.retryButton.setOnClickListener {
+        viewModel.loadPosts()
     }
 
+        binding.fab.setOnClickListener {
+            viewModel.cancelEditing()
+            findNavController().navigate(
+                R.id.action_feedFragment_to_editPostFragment,
+            )
+    }
+        return binding.root
+    }
     private fun openPostCard(post_id: Long) {
 
         findNavController().navigate(R.id.action_feedFragment_to_postCardFragment, Bundle().apply {

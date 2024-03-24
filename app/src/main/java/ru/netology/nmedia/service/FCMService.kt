@@ -64,7 +64,7 @@ class FCMService : FirebaseMessagingService() {
                     )
 
                     PostRepositorySQLiteRoomImpl(
-                        AppDb.getInstance(application).postDao(),
+                        //AppDb.getInstance(application).postDao(),
                         applicationContext
                     ).save(post)
 

@@ -11,12 +11,12 @@ data class PostEntity(
     val author: String,
     val content: String,
     val likedByMe: Boolean,
-    val likedCnt: Long,
+    val likes: Long,
     val sharedCnt: Long,
     val lookedCnt: Long,
     val title: String,
     val video: String,
-    val published: String,
+    val published: Long,
 
     ) {
 
@@ -26,7 +26,7 @@ data class PostEntity(
         content,
         published,
         likedByMe,
-        likedCnt,
+        likes,
         sharedCnt,
         lookedCnt,
         title,
@@ -39,11 +39,11 @@ data class PostEntity(
             post.author,
             post.content,
             post.likedByMe,
-            post.likedCnt,
+            post.likes,
             post.sharedCnt,
             post.lookedCnt,
-            post.title,
-            post.video,
+            post.title ?: "",
+            post.video ?: "",
             post.published
         )
     }

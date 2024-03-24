@@ -1,6 +1,7 @@
 package ru.netology.nmedia.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +12,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
-import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.utils.reloadCntCounters
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class PostCardFragment : Fragment() {
 
     private val viewModel: PostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
+        ownerProducer = ::requireActivity
     )
 
     override fun onCreateView(
@@ -33,6 +33,8 @@ class PostCardFragment : Fragment() {
             false
         )
         val postId = arguments?.getLong("id", Long.MIN_VALUE)
+        Log.i("post", "postId $postId")
+
         if (postId?.equals(Long.MIN_VALUE) == true) {
             Snackbar.make(
                 binding.root, R.string.error_empty_content,
@@ -41,17 +43,18 @@ class PostCardFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        var currPost = getActualPost(postId)
+        var currPost = viewModel.getById(postId ?: 0)!!
+
 
         with(binding.postCardFragment) {
 
             tvTextpost.setText(currPost.content)
             tvTitlepost.setText(currPost.author)
-            tvDatepost.setText(currPost.published)
+            tvDatepost.setText(ru.netology.nmedia.utils.getHumanDate(currPost.published))
 
             tvLookCnt.text = reloadCntCounters(currPost.lookedCnt)
             ibShared.text = reloadCntCounters(currPost.sharedCnt)
-            ibLiked.text = reloadCntCounters(currPost.likedCnt)
+            ibLiked.text = reloadCntCounters(currPost.likes)
             ibLiked.isChecked = currPost.likedByMe
 
             if (currPost.video.isBlank()) {
@@ -59,14 +62,15 @@ class PostCardFragment : Fragment() {
                 ivVideoPlay.visibility = View.GONE
             }
             ibShared.setOnClickListener {
-                viewModel.shareById(currPost.id) // поделиться
-                currPost = getActualPost(postId)
+                viewModel.shareById(currPost.id, currPost.content) // поделиться
+                currPost = viewModel.getById(postId ?: 0)!!
                 ibShared.text = reloadCntCounters(currPost.sharedCnt)
             }
             ibLiked.setOnClickListener {
-                viewModel.likeById(currPost.id) //лайк
-                currPost = getActualPost(postId)
-                ibLiked.text = reloadCntCounters(currPost.likedCnt)
+                viewModel.likeById(currPost.id, currPost.likedByMe) //лайк
+                currPost = viewModel.getById(postId ?: 0)!!
+                ibLiked.text = reloadCntCounters(currPost.likes)
+                ibLiked.isChecked = currPost.likedByMe
             }
 
             ivVideoPrew.setOnClickListener {
@@ -89,7 +93,7 @@ class PostCardFragment : Fragment() {
                             }
 
                             R.id.it_edit -> {
-                                viewModel.setEditedValue(currPost)
+                                viewModel.edit(currPost)
                                 findNavController().navigate(
                                     R.id.action_postCardFragment_to_editPostFragment,
                                     Bundle().apply {
@@ -109,7 +113,4 @@ class PostCardFragment : Fragment() {
         return binding.root
     }
 
-    private fun getActualPost(postId: Long?): Post {
-        return viewModel.getById(postId ?: 0)
-    }
 }

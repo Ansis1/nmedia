@@ -2,53 +2,135 @@ package ru.netology.nmedia.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositorySQLiteRoomImpl
+import ru.netology.nmedia.util.SingleLiveEvent
+import java.io.IOException
+import kotlin.concurrent.thread
 
 private val empty = Post(
     id = 0,
     content = "",
     author = "Me", //TODO unhardcore
-    likedByMe = false,
-    published = "",
-    title = "",
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository: PostRepository =
-        PostRepositorySQLiteRoomImpl(AppDb.getInstance(application).postDao(), application)
-    val data = repository.getAll()
+        PostRepositorySQLiteRoomImpl(application)
+    private val _data = MutableLiveData(FeedModel())
+    val data: LiveData<FeedModel>
+        get() = _data
+
     val edited = MutableLiveData(empty)
 
-    fun setEditedValue(edPost: Post) { // запись значения перед редактированием
+    private val _postCreated = SingleLiveEvent<Unit>()
+    val postCreated: LiveData<Unit>
+        get() = _postCreated
+
+    init {
+        loadPosts()
+    }
+
+    fun loadPosts() {
+
+        thread {
+
+            _data.postValue(FeedModel(loading = true))
+            try {
+
+                val posts = repository.getAll()
+
+                FeedModel(posts = posts, empty = posts.isEmpty())
+
+            } catch (e: IOException) {
+
+                FeedModel(error = true)
+            }.also(_data::postValue)
+
+        }
+
+
+    }
+
+    fun save() {
+
+        edited.value?.let {
+            thread {
+
+                repository.save(it)
+                _postCreated.postValue(Unit)
+
+            }
+
+        }
+        edited.value = empty
+    }
+
+    fun edit(edPost: Post) { // запись значения перед редактированием
         edited.value = edPost
     }
 
     fun changeContent(content: String) { // изменение текста
+        val text = content.trim()
+
         edited.value?.let {
 
-            val text = content.trim()
-            if (it.content != text) {
-                repository.save(it.copy(content = text))
+
+            if (it.content == text) {
+                return
             }
-            edited.value = empty
+            edited.value = it.copy(content = text)
 
         }
 
     }
 
+    fun likeById(id: Long, isLiked: Boolean) {
+        thread {
+            val lkdPost = repository.likeById(id, isLiked)
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                    .filter { it.id != lkdPost.id } + lkdPost
+                ))
+
+        }
+    }
+
+    fun removeById(id: Long) {
+
+        thread {
+            // Оптимистичная модель
+            val old = _data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                    .filter { it.id != id }
+                )
+            )
+            try {
+                repository.removeById(id)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        }
+    }
+
+
     fun cancelEditing() { //отмена редактирования
         edited.value = empty
     }
 
-    fun likeById(id: Long) = repository.likeById(id)
-    fun shareById(id: Long) = repository.shareById(id)
+
+    fun shareById(id: Long, content: String) = repository.shareById(id, content)
     fun openInBrowser(urlVideo: String) = repository.openInBrowser(urlVideo)
-    fun removeById(id: Long) = repository.removeById(id)
-    fun getById(id: Long) = repository.getById(id)
+
+    fun getById(id: Long): Post? =
+
+        _data.value?.posts?.last { it.id == id }
+    ///  repository.getById(id)
 }
 
